@@ -79,7 +79,7 @@
 
       <p>
          One aspect of the latter is that a long-running RPC will not block RPCs issued afterwards. Note that this
-         is different from any Ajax/Comet techniques, were - due to the nature of HTTP - a result/failure for
+         is different from any Ajax/Comet techniques, where - due to the nature of HTTP - a result/failure for
          RPC 1 necessarily needs to be received before the result/failure of any RPC issued after RPC 1.
       </p>
 
@@ -457,9 +457,10 @@ if __name__ == '__main__':
       <div class="codeex">
          <h1>AutobahnPython RPC Server</h1>
          <pre class="brush: python; highlight: [11, 25, 26, 27, 57, 60, 61]; toolbar: false; auto-links: false; gutter: true;">
-import math
+import sys, math
 
-from twisted.internet import reactor
+from twisted.python import log
+from twisted.internet import defer, reactor
 
 from autobahn.websocket import listenWS
 from autobahn.wamp import exportRpc, \
@@ -521,6 +522,12 @@ class SimpleServerProtocol(WampServerProtocol):
 
 
 if __name__ == '__main__':
+
+   if len(sys.argv) > 1 and sys.argv[1] == 'debug':
+      log.startLogging(sys.stdout)
+      debug = True
+   else:
+      debug = False
 
    factory = WampServerFactory("ws://localhost:9000", debugWamp = debug)
    factory.protocol = SimpleServerProtocol
