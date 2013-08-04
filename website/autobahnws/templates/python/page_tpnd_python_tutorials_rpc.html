@@ -66,14 +66,14 @@
       </p>
 
       <p>
-         In general, a client issues a RPC by providing the URI of the procedure/method plus any call arguments.
+         In general, a client issues an RPC by providing the URI of the procedure/method plus any call arguments.
          The client will get back a <i>promise</i> (aka <i>future</i> or <i>deferred</i>). The client can add
          success and failure callbacks to that <i>promise</i> which will get fired asynchronously when the RPC
          is finished.
       </p>
 
       <p>
-         Since WAMP is fully asynchronous, the client can continue work while a RPC is still in-progress,
+         Since WAMP is fully asynchronous, the client can continue work while an RPC is still in-progress,
          multiple RPC can be in flight at every time, and RPC results/failures can be received out-of-order.
       </p>
 
@@ -91,7 +91,7 @@
          For procedure and methods to be callable from remote clients via RPCs,
          those procedures and methods need to be "registered for RPC".
          Doing so ("remoting a callable") will associate a procedure URI with
-         the callable and make the callable into a RPC endpoint.
+         the callable and make the callable into an RPC endpoint.
       </p>
 
       <p>
@@ -257,7 +257,7 @@
 
       <p>
          The server also contains some boilerplate code which sets up logging (to stdout)
-         and provides an embedded Web server to serve a HTML/JS client testing our server.
+         and provides an embedded Web server to serve an HTML/JS client testing our server.
       </p>
 
       <p>
@@ -321,8 +321,8 @@ if __name__ == '__main__':
       </div>
 
       <p>
-         We create our server protocol by deriving from {{inlinecode('RpcServer1Protocol')}}
-         {{inlinecode('WampServerProtocol')}} and register the methods to be remoted
+         We create our server protocol by deriving {{inlinecode('RpcServer1Protocol')}}
+         from {{inlinecode('WampServerProtocol')}} and register the methods to be remoted
          in {{inlinecode('onSessionOpen')}}.
       </p>
 
@@ -430,7 +430,7 @@ if __name__ == '__main__':
       </p>
 
       <p>
-         When the WAMP session has been established, we issue a RPC (lines 41 - 48)
+         When the WAMP session has been established, we issue an RPC (lines 41 - 48)
          by providing the URI {{inlinecode('"http://example.com/simple/calc#add"')}} of the RPC endpoint
          plus any arguments to the call.
       </p>
@@ -438,7 +438,7 @@ if __name__ == '__main__':
       <p>
          The call will return a <i>promise</i> (aka <i>deferred</i>) object to us.
          We then can use the returned <i>promise</i> to add asynchronous handlers for
-         RPC success and failure handling using it's {{inlinecode('then')}} method.
+         RPC success and failure handling using its {{inlinecode('then')}} method.
       </p>
 
 
@@ -564,8 +564,8 @@ if __name__ == '__main__':
       </p>
 
       <p>
-         The RPC'ed method {{inlinecode('asyncSum')}} (lines 50 ff.) simulates a slow running procedure. It'll return
-         it's result only after 3s delay. That way, we can later see in the client how RPCs really work asynchronously,
+         The RPCed method {{inlinecode('asyncSum')}} (lines 50 ff.) simulates a slow running procedure. It'll return
+         its result only after 3s delay. That way, we can later see in the client how RPCs really work asynchronously,
          and how multiple RPCs can be outstanding, with their results received asynchronously and out-of-order.
       </p>
 
@@ -642,7 +642,7 @@ if __name__ == '__main__':
          In the test function we then simply issue RPCs, and results will arrive
          and trigger callbacks asynchronously and potentially out-of-order. The
          latter can be seen when you closely inspect the order in which the results
-         for the calls on line 29-30 arrive. Event though the RPC on {{inlinecode('calc:asum')}}
+         for the calls on line 29-30 arrive. Even though the RPC on {{inlinecode('calc:asum')}}
          was issued before {{inlinecode('calc:sum')}}, the results of {{inlinecode('calc:asum')}}
          arrive <i>after</i> those for {{inlinecode('calc:sum')}}.
       </p>
@@ -737,34 +737,34 @@ if __name__ == '__main__':
       </p>
 
       <p>
-         To initiate a RPC, we use the {{inlinecode('call')}} method on the protocol instance (i.e. line 30)
+         To initiate an RPC, we use the {{inlinecode('call')}} method on the protocol instance (i.e. line 30)
          which will return us a <a href="http://twistedmatrix.com/documents/current/core/howto/defer.html">Twisted Deferred</a>
-         on which we can add a success and error callbacks.
+         on which we can add success and error callbacks.
       </p>
 
       <p>
-         We can call RPCs not only with arguments of atomic types, but also of complex type, like
-         i.e. lists (line 34). The only requirement for arguments and return values of remoted
+         We can call RPCs not only with arguments of atomic types, but also of complex type, 
+         e.g. lists (line 34). The only requirement for arguments and return values of remoted
          procedures and methods is that all of those need to be JSON serializable.
       </p>
 
       <p>
          Note that since all RPCs execute fully asynchronously, RPC results (and failures)
          will arrive asynchronously, and not necessarily in the order the RPCs were
-         issues.
+         issued.
       </p>
 
       <p>
          When we want to sequence calls, i.e. use the result of RPC 1 in a second RPC 2,
-         we can do so by only issueing the dependent RPC within the RPC result handler of
-         the first. I.e. see lines 36-37. An alternative syntax using Twisted Inline Callbacks
+         we can do so by only issuing the dependent RPC within the RPC result handler of
+         the first. E.g. see lines 36-37. An alternative syntax using Twisted Inline Callbacks
          for doing the same is shown <a href="https://github.com/tavendo/AutobahnPython/blob/master/examples/wamp/rpc/simple/client_icb.py">here</a>.
       </p>
 
       <p>
          Since we want to automatically shutdown the client, but only when all RPCs have
          finished, we created a Deferred from all Deferreds created by RPCs (line 53) and
-         add a callback that closes the connection and shuts down the reactor.
+         added a callback that closes the connection and shuts down the reactor.
       </p>
 
    </div>
